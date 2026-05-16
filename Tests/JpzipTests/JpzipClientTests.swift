@@ -254,6 +254,26 @@ final class JpzipClientTests: XCTestCase {
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 2)
     }
 
+    func testNoRetryOn4xx() async throws {
+        // Regression: a 403 must throw immediately, not consume the 3-attempt
+        // retry budget. If it ever did, the call count would be 3.
+        let stub = StubFetcher()
+        stub.set("https://example.com/p/231.json", status: 403, json: "{}")
+        let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
+        do {
+            _ = try await client.lookup("2310017")
+            XCTFail("expected JpzipError.httpError")
+        } catch let err as JpzipError {
+            switch err {
+            case .httpError(_, let status):
+                XCTAssertEqual(status, 403)
+            default:
+                XCTFail("unexpected error: \(err)")
+            }
+        }
+        XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 1)
+    }
+
     func testDataVersionChangeInvalidatesCache() async throws {
         let stub = StubFetcher()
         stub.set("https://example.com/meta.json", status: 200, json: metaJSON)
