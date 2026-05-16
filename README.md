@@ -34,7 +34,7 @@ targets: [
 ```swift
 import Jpzip
 
-if let entry = try await lookup("2310831") {
+if let entry = try await lookup("2310017") {
     print(entry.prefecture)  // 神奈川県
     print(entry.city)        // 横浜市中区
 }
@@ -60,7 +60,7 @@ let client = JpzipClient(
 )
 
 try await client.preload("all")
-let entry = try await client.lookup("2310831")
+let entry = try await client.lookup("2310017")
 ```
 
 ## Cache プロトコル

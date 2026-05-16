@@ -70,7 +70,7 @@ final class StubFetcher: HTTPFetcher, @unchecked Sendable {
 
 private let sampleEntryJSON = """
 {
-  "2310831": {
+  "2310017": {
     "prefecture": "神奈川県",
     "prefecture_kana": "カナガワケン",
     "prefecture_roma": "Kanagawa",
@@ -80,7 +80,7 @@ private let sampleEntryJSON = """
     "city_roma": "Yokohama Shi Naka Ku",
     "city_code": "14104",
     "towns": [
-      {"town": "矢口台", "kana": "ヤグチダイ", "roma": "Yaguchidai"}
+      {"town": "本町", "kana": "ホンチョウ", "roma": "Honcho"}
     ]
   }
 }
@@ -102,9 +102,9 @@ private let metaJSON = """
 final class JpzipClientTests: XCTestCase {
 
     func testIsValidZipcode() {
-        XCTAssertTrue(isValidZipcode("2310831"))
+        XCTAssertTrue(isValidZipcode("2310017"))
         XCTAssertFalse(isValidZipcode("231083"))
-        XCTAssertFalse(isValidZipcode("23108311"))
+        XCTAssertFalse(isValidZipcode("23100171"))
         XCTAssertFalse(isValidZipcode("231083a"))
         XCTAssertFalse(isValidZipcode(""))
     }
@@ -121,19 +121,19 @@ final class JpzipClientTests: XCTestCase {
         let stub = StubFetcher()
         stub.set("https://example.com/p/231.json", status: 200, json: sampleEntryJSON)
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
-        let entry = try await client.lookup("2310831")
+        let entry = try await client.lookup("2310017")
         XCTAssertNotNil(entry)
         XCTAssertEqual(entry?.prefecture, "神奈川県")
         XCTAssertEqual(entry?.prefectureRoma, "Kanagawa")
-        XCTAssertEqual(entry?.towns.first?.town, "矢口台")
+        XCTAssertEqual(entry?.towns.first?.town, "本町")
     }
 
     func testLookupCachesPrefixDict() async throws {
         let stub = StubFetcher()
         stub.set("https://example.com/p/231.json", status: 200, json: sampleEntryJSON)
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
-        _ = try await client.lookup("2310831")
-        _ = try await client.lookup("2310831")
+        _ = try await client.lookup("2310017")
+        _ = try await client.lookup("2310017")
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 1)
     }
 
@@ -150,7 +150,7 @@ final class JpzipClientTests: XCTestCase {
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
         let dict = try await client.lookupGroup("231")
         XCTAssertEqual(dict.count, 1)
-        XCTAssertNotNil(dict["2310831"])
+        XCTAssertNotNil(dict["2310017"])
     }
 
     func testLookupGroup1Digit() async throws {
@@ -238,9 +238,9 @@ final class JpzipClientTests: XCTestCase {
         let stub = StubFetcher()
         stub.set("https://example.com/p/231.json", status: 200, json: sampleEntryJSON)
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
-        _ = try await client.lookup("2310831")
+        _ = try await client.lookup("2310017")
         try await client.refresh()
-        _ = try await client.lookup("2310831")
+        _ = try await client.lookup("2310017")
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 2)
     }
 
@@ -249,7 +249,7 @@ final class JpzipClientTests: XCTestCase {
         stub.set("https://example.com/p/231.json", status: 200, json: sampleEntryJSON)
         stub.failNext("https://example.com/p/231.json", times: 1)
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
-        let entry = try await client.lookup("2310831")
+        let entry = try await client.lookup("2310017")
         XCTAssertNotNil(entry)
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 2)
     }
@@ -260,7 +260,7 @@ final class JpzipClientTests: XCTestCase {
         stub.set("https://example.com/p/231.json", status: 200, json: sampleEntryJSON)
         let client = JpzipClient(baseURL: "https://example.com", fetcher: stub)
         _ = try await client.getMeta()
-        _ = try await client.lookup("2310831")
+        _ = try await client.lookup("2310017")
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 1)
 
         // Switch meta to a new data version, refresh meta cache, refetch.
@@ -268,7 +268,7 @@ final class JpzipClientTests: XCTestCase {
         stub.set("https://example.com/meta.json", status: 200, json: v2)
         try await client.refresh()
         _ = try await client.getMeta()
-        _ = try await client.lookup("2310831")
+        _ = try await client.lookup("2310017")
         // After refresh L1 was cleared, so prefix dict should refetch.
         XCTAssertEqual(stub.callCount("https://example.com/p/231.json"), 2)
     }
