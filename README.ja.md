@@ -5,6 +5,7 @@
 [![Platforms](https://img.shields.io/badge/platforms-iOS%2015%20%7C%20macOS%2012%20%7C%20tvOS%2015%20%7C%20watchOS%208-lightgrey.svg)](#必要環境)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Test](https://github.com/jpzip/swift/actions/workflows/test.yml/badge.svg)](https://github.com/jpzip/swift/actions/workflows/test.yml)
+[![Docs](https://img.shields.io/badge/docs-jpzip.nadai.dev-0066cc.svg)](https://jpzip.nadai.dev)
 
 > **jpzip** の Swift SDK — 無料・無制限の日本郵便番号 API。
 > 日本郵便の `KEN_ALL.csv` / `KEN_ALL_ROME.csv` を JSON 正規化し CDN 配信。

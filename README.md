@@ -5,6 +5,7 @@
 [![Platforms](https://img.shields.io/badge/platforms-iOS%2015%20%7C%20macOS%2012%20%7C%20tvOS%2015%20%7C%20watchOS%208-lightgrey.svg)](#requirements)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Test](https://github.com/jpzip/swift/actions/workflows/test.yml/badge.svg)](https://github.com/jpzip/swift/actions/workflows/test.yml)
+[![Docs](https://img.shields.io/badge/docs-jpzip.nadai.dev-0066cc.svg)](https://jpzip.nadai.dev)
 
 > Swift SDK for **jpzip** — a free, unlimited Japanese postal code (郵便番号) API.
 > 日本の全郵便番号 120,677 件を CDN 配信 JSON から引く Swift SDK。
